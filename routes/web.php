@@ -11,8 +11,6 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\ReportesController;
 
-
-
 route::get('/',[LoginController::class, 'login'])->name('loginRaiz');
 route::get('login',[LoginController::class,'login'])->name('login');
 route::post('valida',[LoginController::class,'valida'])->name('valida');
