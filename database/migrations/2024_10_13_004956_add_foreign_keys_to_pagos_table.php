@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('pagos', function (Blueprint $table) {
-            $table->foreign(['idCliente'], 'clientePago')->references(['id'])->on('clientes');
-            $table->foreign(['idTipoPago'], 'tipoPago')->references(['id'])->on('tipopagos');
             $table->foreign(['idRegistro'], 'quienRegistro')->references(['id'])->on('usuarios');
             $table->foreign(['idReferencia'], 'tipoReferencias')->references(['id'])->on('tipopagos');
+            $table->foreign(['idCliente'], 'clientePago')->references(['id'])->on('clientes');
+            $table->foreign(['idTipoPago'], 'tipoPago')->references(['id'])->on('tipopagos');
         });
     }
 
@@ -29,10 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('pagos', function (Blueprint $table) {
-            $table->dropForeign('clientePago');
-            $table->dropForeign('tipoPago');
             $table->dropForeign('quienRegistro');
             $table->dropForeign('tipoReferencias');
+            $table->dropForeign('clientePago');
+            $table->dropForeign('tipoPago');
         });
     }
 };

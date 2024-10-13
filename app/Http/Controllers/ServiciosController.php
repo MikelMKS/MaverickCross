@@ -61,17 +61,31 @@ class ServiciosController extends Controller
 
         $buscar = DB::connection('mysql')->select("SELECT id,IFNULL(deuda,0) AS deuda FROM clientes WHERE id = $cliente");
 
-        return flotFormatoM20($buscar[0]->deuda);
+        return $buscar[0]->deuda;
+    }
+
+    public function invitadosActivos(){
+        $cliente = $_REQUEST['cliente'];
+
+        $buscar = DB::connection('mysql')->select("SELECT COUNT(id) AS invitados FROM invitados WHERE idCliente = $cliente AND aplicado = 0");
+
+        if(!empty($buscar) && $buscar[0]->invitados > 0){
+            $porcDescuento = (15*$buscar[0]->invitados) > 100 ? 100 : 15*$buscar[0]->invitados;
+        }else{
+            $porcDescuento = null;
+        }
+
+        return $porcDescuento;
     }
 
     public function buscaMembresiasActivas(){
         $cliente = $_REQUEST['cliente'];
-        
+
         $tabla = DB::connection('mysql')->select("SELECT *,CASE WHEN CURDATE() < fechaInicio THEN 'PENDENTE' WHEN CURDATE() > fechaFin THEN 'FINALIZADO' ELSE 'ACTIVO' END AS sta
         FROM(
             SELECT p.id,t.tipo,p.observacion,p.fechaInicio
-            ,CASE 
-                WHEN idTipoPago = 1 THEN DATE_ADD(fechaInicio, INTERVAL 1 MONTH) 
+            ,CASE
+                WHEN idTipoPago = 1 THEN DATE_ADD(fechaInicio, INTERVAL 1 MONTH)
                 WHEN idTipoPago = 2 THEN fechaInicio
                 WHEN idTipoPago = 3 THEN DATE_ADD(fechaInicio, INTERVAL 1 WEEK)
             END AS fechaFin
@@ -86,7 +100,7 @@ class ServiciosController extends Controller
     }
 
     public function guardarServicio(Request $request){
-        $response = array('sta' => 0,'msg' => ''); 
+        $response = array('sta' => 0,'msg' => '');
 
         $cliente = $request->clientesNR;
         $servicio = $request->serviciosNR;
@@ -95,35 +109,36 @@ class ServiciosController extends Controller
         $importe = str_replace(',','',$request->importeNR);
         $pendiente = str_replace(',','',$request->pendienteNR);
         $observacion = $request->observacionNR;
+        $total = str_replace(',','',$request->deudaNR);
 
         $response = noVacio($cliente,'CLIENTE',$response);
         $response = noVacio($servicio,'SERVICIO',$response);
-        $response = noVacio($importe,'IMPORTE',$response);
+        // $response = noVacio($importe,'IMPORTE',$response);
+        if($importe == null){
+            $response['sta'] = '1';
+            $response['msg'] = "COLOCA ALGUN DATO EN IMPORTE";
+        }
 
         if(in_array($servicio,[1,2,3])){
             $response = noVacio($fecini,'FECHA INICIO',$response);
-        }elseif($servicio == 5){
+        }elseif($servicio == 4){
             $response = noVacio($referencia,'REFERENCIA',$response);
         }
 
         if($response['sta'] == 0){
 
-            $consultar = DB::connection('mysql')->select("SELECT id,IFNULL(deuda,0) AS deuda FROM clientes WHERE id = '$cliente'");
-            $deuda = $consultar[0]->deuda;
 
-            if($servicio == 5){
+            if($servicio == 4){
+                $response = noVacio($importe,'IMPORTE',$response);
+                if($response['sta'] == 1){
+                    return json_encode($response);
+                }
                 $total = $deuda-$importe;
-            }else{
-                $total = $deuda+$pendiente;
-            }
-
-            if($total < 0){
-                $total = null;
             }
 
             DB::connection('mysql')->table('clientes')->where('id','=',$cliente)->update(['deuda' => $total]);
 
-            DB::connection('mysql')->table('pagos')->insert([
+            $pago = DB::connection('mysql')->table('pagos')->insertGetId([
                 'idCliente' => $cliente,
                 'idTipoPago' => $servicio,
                 'idReferencia' => $referencia,
@@ -135,6 +150,14 @@ class ServiciosController extends Controller
                 'fechaRegistro' => Date('Y-m-d H:i'),
             ]);
 
+            if($servicio == 1){
+                DB::connection('mysql')->table('invitados')->where('idCliente','=',$cliente)->where('aplicado',0)->update([
+                    'aplicado' => 1,
+                    'fechaAplicado' => Date('Y-m-d H:i'),
+                    'idAplico' => Session::get('Sid'),
+                    'idMesAplico' => $pago,
+                ]);
+            }
         }
 
         echo json_encode($response);
@@ -150,8 +173,8 @@ class ServiciosController extends Controller
 
     public function cambiarFecIni(){
         $id = $_REQUEST['id'];
-        
-        $datos = DB::connection('mysql')->select("SELECT * 
+
+        $datos = DB::connection('mysql')->select("SELECT *
         FROM pagos AS p
         LEFT JOIN(SELECT id AS idT,tipo FROM tipopagos) AS t ON p.idTipoPago = t.idT
         WHERE id = {$id}
@@ -161,7 +184,7 @@ class ServiciosController extends Controller
     }
 
     public function guardarEdicionMembresia(Request $request){
-        $response = array('sta' => 0,'msg' => ''); 
+        $response = array('sta' => 0,'msg' => '');
 
         $id = $request->idMembresiaEditar;
         $fecini = $request->feciniEMemb;

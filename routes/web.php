@@ -45,6 +45,8 @@ Route::middleware([RedmineSession::class])->group(function () {
     route::get('clientes',[ClientesController::class,'index'])->name('clientes');
     route::get('agregarClienteMain',[ClientesController::class,'agregarClienteMain'])->name('agregarClienteMain');
     route::post('guardarCliente',[ClientesController::class,'guardarCliente'])->name('guardarCliente');
+    route::get('agregarInvitadoMain',[ClientesController::class,'agregarInvitadoMain'])->name('agregarInvitadoMain');
+    route::post('guardarInvitado',[ClientesController::class,'guardarInvitado'])->name('guardarInvitado');
 
     route::get('verCliente',[ClientesController::class,'verCliente'])->name('verCliente');
     route::post('updateCliente',[ClientesController::class,'updateCliente'])->name('updateCliente');
@@ -54,6 +56,7 @@ Route::middleware([RedmineSession::class])->group(function () {
     route::get('servicios',[ServiciosController::class,'index'])->name('servicios');
     route::get('serviciosTabla',[ServiciosController::class,'serviciosTabla'])->name('serviciosTabla');
     route::get('deudaCliente',[ServiciosController::class,'deudaCliente'])->name('deudaCliente');
+    route::get('invitadosActivos',[ServiciosController::class,'invitadosActivos'])->name('invitadosActivos');
     route::get('buscaMembresiasActivas',[ServiciosController::class,'buscaMembresiasActivas'])->name('buscaMembresiasActivas');
     route::post('guardarServicio',[ServiciosController::class,'guardarServicio'])->name('guardarServicio');
     route::get('agregarServicioMain',[ServiciosController::class,'agregarServicioMain'])->name('agregarServicioMain');

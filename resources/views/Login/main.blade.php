@@ -91,7 +91,13 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link nav-icon" style="cursor:pointer" onclick="agregarClienteMain();" data-bs-toggle="dropdown">
-            <i class="ri-user-add-line"></i>
+            <i class="bi bi-person-plus"></i>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" style="cursor:pointer" onclick="agregarInvitadoMain();" data-bs-toggle="dropdown">
+            <i class="bi bi-people"></i>
           </a>
         </li>
 
@@ -251,6 +257,19 @@
               </div>
               {{--  --}}
               {{--  --}}
+              <div class="modal fade" id="modalagregarInvitadoMain" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        {{--  --}}
+                        <div id="modalagregarInvitadoMainBody">
+
+                        </div>
+                        {{--  --}}
+                    </div>
+                </div>
+              </div>
+              {{--  --}}
+              {{--  --}}
               <div class="modal fade" id="modalagregarServicioMain" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
@@ -355,6 +374,25 @@
                 $('#modalagregarClienteMain').modal({backdrop: 'static',keyboard: false});
                 $('#modalagregarClienteMain').modal('show');
                 $("#modalagregarClienteMainBody").html(response);
+            },
+            error: function(error) {
+                swalTimer('error','HA OCURRIDO UN ERROR, INTENTALO NUEVAMENTE',2000);
+            }
+        });
+    }
+
+    function agregarInvitadoMain(){
+        $.ajax({
+            data: { _token: "{{ csrf_token() }}" },
+            type : "GET",
+            url : "{{route('agregarInvitadoMain')}}",
+            beforeSend : function () {
+                $("#modalagregarInvitadoMainBody").html('{{Html::image('img/loading.gif', 'CARGANDO ESPERE', ['class' => 'center-block'])}}');
+            },
+            success:  function (response) {
+                $('#modalagregarInvitadoMain').modal({backdrop: 'static',keyboard: false});
+                $('#modalagregarInvitadoMain').modal('show');
+                $("#modalagregarInvitadoMainBody").html(response);
             },
             error: function(error) {
                 swalTimer('error','HA OCURRIDO UN ERROR, INTENTALO NUEVAMENTE',2000);

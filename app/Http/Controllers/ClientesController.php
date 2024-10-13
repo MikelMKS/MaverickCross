@@ -22,7 +22,7 @@ class ClientesController extends Controller
     }
 
     public function guardarCliente(Request $request){
-        $response = array('sta' => 0,'msg' => ''); 
+        $response = array('sta' => 0,'msg' => '');
 
         $nombre = $request->nombre;
         $apellidoPat = $request->apellidoPat;
@@ -67,8 +67,39 @@ class ClientesController extends Controller
         echo json_encode($response);
     }
 
+    public function guardarInvitado(Request $request){
+        $response = array('sta' => 0,'msg' => '');
+
+        $idCliente = $request->clienteInvitadoMain;
+        $invitado = $request->invitadoMain;
+
+        $response = noVacio($idCliente,'CLIENTE',$response);
+        $response = noVacio($invitado,'NOMBRE',$response);
+
+        if($response['sta'] == 0){
+
+            if($response['sta'] == 0){
+                DB::connection('mysql')->table('invitados')->insert([
+                    'idCliente' => $idCliente,
+                    'invitado' => $invitado,
+                    'idRegistro' => Session::get('Sid'),
+                    'fechaRegistro' => Date('Y-m-d H:i'),
+                    'aplicado' => 0
+                ]);
+            }
+        }
+
+        echo json_encode($response);
+    }
+
     public function agregarClienteMain(){
         return view('Clientes.agregarClienteMain');
+    }
+
+    public function agregarInvitadoMain(){
+        $clientes = DB::connection('mysql')->select("SELECT id,nombre,apellidoP,apellidoM FROM clientes ORDER BY nombre ASC");
+
+        return view('Clientes.agregarInvitadoMain',compact('clientes'));
     }
 
     public function verCliente(){
@@ -80,7 +111,7 @@ class ClientesController extends Controller
     }
 
     public function updateCliente(Request $request){
-        $response = array('sta' => 0,'msg' => ''); 
+        $response = array('sta' => 0,'msg' => '');
 
         $id = $request->idCliente;
         $nombre = $request->nombre;

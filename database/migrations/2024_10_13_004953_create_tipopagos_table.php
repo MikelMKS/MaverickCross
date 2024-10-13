@@ -17,14 +17,6 @@ return new class extends Migration
             $table->integer('id', true);
             $table->string('tipo')->nullable();
         });
-
-        DB::table('tipopagos')->insert([
-			['tipo' => 'Mes']
-			,['tipo' => 'Visita']
-			,['tipo' => 'Semana']
-			,['tipo' => 'Herbalife']
-			,['tipo' => 'Pago']
-		]);
     }
 
     /**

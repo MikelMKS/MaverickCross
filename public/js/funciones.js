@@ -6,17 +6,31 @@ function valIsEmpty(value, extra=''){
 }
 
 function number_format(amount, decimals) {
-  amount += '';
-  amount = parseFloat(amount.replace(/[^0-9\.]/g, ''));
-  decimals = decimals || 0;
-  if (isNaN(amount) || amount === 0)
-      return parseFloat(0).toFixed(decimals);
-  amount = '' + amount.toFixed(decimals);
-  var amount_parts = amount.split('.'),
-      regexp = /(\d+)(\d{3})/;
-  while (regexp.test(amount_parts[0]))
-      amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
-  return amount_parts.join('.');
+    // Convertir el valor a string para facilitar la manipulación
+    amount += '';
+    // Reemplazar cualquier cosa que no sea dígito, punto o signo negativo
+    amount = parseFloat(amount.replace(/[^0-9\.\-]/g, ''));
+    decimals = decimals || 0;
+
+    // Si el valor no es un número o es 0, devolver 0 con el número de decimales especificado
+    if (isNaN(amount) || amount === 0) {
+        return parseFloat(0).toFixed(decimals);
+    }
+
+    // Formatear el número con la cantidad de decimales especificada
+    amount = amount.toFixed(decimals);
+
+    // Separar la parte entera de la parte decimal
+    var amount_parts = amount.split('.'),
+        regexp = /(\d+)(\d{3})/;
+
+    // Añadir comas cada tres dígitos en la parte entera
+    while (regexp.test(amount_parts[0])) {
+        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+    }
+
+    // Unir la parte entera y la parte decimal con el punto
+    return amount_parts.join('.');
 }
 
 function swalLoading(){

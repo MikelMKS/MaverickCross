@@ -17,11 +17,6 @@ return new class extends Migration
             $table->integer('id', true);
             $table->string('tipo', 50)->nullable();
         });
-
-        DB::table('tipousuarios')->insert([
-			['tipo' => 'Admin']
-			,['tipo' => 'Usuario']
-		]);
     }
 
     /**

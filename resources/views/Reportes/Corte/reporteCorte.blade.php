@@ -3,7 +3,7 @@
 @section('contenido')
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 <h5 class="card-title">
-    <div ng-repeat="param in plugin.wsdlURLs track by $index" class="row">
+    <div class="row">
         <div class="col-sm-2">
             <input type="date" class="form-control inputtext" id="fecIniFiltro" name="fecIniFiltro" placeholder="INICIO" autocomplete="off">
         </div>

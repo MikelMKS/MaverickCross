@@ -64,6 +64,12 @@ function flotFormatoM2($val){
     return $for;
 }
 
+function flotFormatoM2Negativa($val){
+    $for = number_format($val, 2, '.', ',');
+
+    return $for;
+}
+
 function flotFormatoM20($val){
     $for = number_format($val, 2, '.', ',');
     if($for <= '0'){

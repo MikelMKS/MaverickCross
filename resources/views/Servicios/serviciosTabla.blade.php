@@ -1,7 +1,7 @@
 <table id="Dtable" class="styled-table" style="width:100%">
     <thead>
         <tr>
-            <th class="colcont" colspan="9" style="font-size: 1.5em !important;border-bottom: 1px solid rgba(236, 236, 236, 0.504) !important;">TOTAL PENDIENTE DEL CLIENTE: $ {{flotFormatoM2($datosCliente[0]->deuda)}}</th>
+            <th class="colcont" colspan="9" style="font-size: 1.5em !important;border-bottom: 1px solid rgba(236, 236, 236, 0.504) !important;">TOTAL PENDIENTE DEL CLIENTE: $ {{flotFormatoM2Negativa($datosCliente[0]->deuda)}}</th>
         </tr>
         <tr>
             <th class="colcont" id="c0"></th>
@@ -54,7 +54,7 @@
             <td class="filtercol"><input type="text" class="thfilter" idc="6" id="i6"></td>
             <td class="filtercol"><input type="text" class="thfilter" idc="7" id="i7"></td>
             <td class="filtercol"><input type="text" class="thfilter" idc="8" id="i8"></td>
-        </tr> 
+        </tr>
     </tfoot>
 </table>
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
