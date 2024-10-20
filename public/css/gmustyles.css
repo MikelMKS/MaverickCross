@@ -13,14 +13,14 @@ table.styled-table thead th, table.styled-table thead td {
 }
 
 .col {
-    background-color: #da1e1e;
+    background-color: var(--color-orange);
     color: #ffffff;
     text-align: center !important;
     border-bottom: none !important;
 }
 
 .colcont {
-    background-color: #da1e1e;
+    background-color: var(--color-orange);
     color: #ffffff;
     font-size: 13px !important;
     text-align: center !important;
@@ -29,7 +29,7 @@ table.styled-table thead th, table.styled-table thead td {
 
 .filtercol {
     padding: 1px !important;
-    background-color: #da1e1e;
+    background-color: var(--color-orange);
     border-top: none !important;
 }
 
@@ -54,12 +54,12 @@ table.styled-table thead th, table.styled-table thead td {
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid var(--color-red);
+    border-bottom: 2px solid var(--color-withe);
 }
 
 .styled-table tbody tr.active-row {
     font-weight: bold;
-    color: var(--color-red);
+    color: var(--color-withe);
 }
 
 .styled-table tbody tr:hover {
@@ -86,7 +86,7 @@ table.styled-table thead th, table.styled-table thead td {
 /* -----------------------------------------------------------------------INPUT------------------------------------------------------------------------------ */
 .thfilter {
     border-radius: 10px !important;
-    border: 2px solid var(--color-red);
+    border: 2px solid var(--color-withe);
     width: 100%;
     padding: 1px;
     margin: 0px;
@@ -201,7 +201,7 @@ table.styled-table thead th, table.styled-table thead td {
 .titulomodal
 {
     font-weight: bold;
-    color: var(--color-red);
+    color: var(--color-withe);
 }
 .subtitulomodal
 {
