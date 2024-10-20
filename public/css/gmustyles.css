@@ -154,13 +154,43 @@ table.styled-table thead th, table.styled-table thead td {
 /*---------------------------------------------------------------------- /SWEETALERT ----------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------- MODAL ----------------------------------------------------------------------*/
+.modal{
+    background: linear-gradient(135deg, #43827483, #43827483);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.modal:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/img/logo.png'); /* Ruta a tu logo */
+    background-repeat: repeat;
+    background-size: 150px 150px; /* Tamaño de la imagen, ajusta según necesidad */
+    opacity: 0.2; /* Ajusta para lograr un efecto más o menos visible */
+    pointer-events: none;
+}
+
 .modal-header{
     font-family: "Open Sans", sans-serif;
-    background: linear-gradient(90deg, #62d8ff44, #83e0ff42);
+    background: #438274c3;
 }
 .modal-footer{
     font-family: "Open Sans", sans-serif;
-    background: linear-gradient(90deg, #62d8ff44, #83e0ff42);
+    background: #438274c3;
 }
 .select2 {
     color: #3f3f3f !important;
