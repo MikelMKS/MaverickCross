@@ -109,7 +109,7 @@ class ServiciosController extends Controller
         $importe = str_replace(',','',$request->importeNR);
         $pendiente = str_replace(',','',$request->pendienteNR);
         $observacion = $request->observacionNR;
-        $total = str_replace(',','',$request->deudaNR);
+        $deuda = str_replace(',','',$request->deudaNR);
 
         $response = noVacio($cliente,'CLIENTE',$response);
         $response = noVacio($servicio,'SERVICIO',$response);
@@ -127,16 +127,44 @@ class ServiciosController extends Controller
 
         if($response['sta'] == 0){
 
-
             if($servicio == 4){
                 $response = noVacio($importe,'IMPORTE',$response);
                 if($response['sta'] == 1){
                     return json_encode($response);
                 }
                 $total = $deuda-$importe;
+                $total = empty($total) || $total < 0 ? null : $total;
+            }else{
+                $total = $deuda;
             }
 
             DB::connection('mysql')->table('clientes')->where('id','=',$cliente)->update(['deuda' => $total]);
+
+            if(in_array($servicio,[1,2,3])){
+                $corroborar = DB::select("SELECT *,CASE WHEN sta = 'P' THEN 'PENDIENTE' WHEN sta = 'A' THEN 'ACTIVO' ELSE 'FINALIZADO' END AS estatus
+                FROM(
+                            SELECT *,CASE WHEN CURDATE() < fechaInicio THEN 'P' WHEN CURDATE() > fechaFin THEN 'F' ELSE 'A' END AS sta
+                            FROM(
+                                        SELECT p.id,p.idCliente,t.tipo,p.fechaInicio
+                                        ,CASE
+                                                WHEN idTipoPago = 1 THEN DATE_ADD(fechaInicio, INTERVAL 1 MONTH)
+                                                WHEN idTipoPago = 2 THEN fechaInicio
+                                                WHEN idTipoPago = 3 THEN DATE_ADD(fechaInicio, INTERVAL 1 WEEK)
+                                        END AS fechaFin
+                                        FROM pagos AS p
+                                        LEFT JOIN(SELECT id,tipo FROM tipopagos) AS t ON p.idTipoPago = t.id
+                                        WHERE p.idCliente = {$cliente}
+                            ) AS s_a
+                ) AS s_b
+                WHERE '{$fecini}' BETWEEN fechaInicio AND fechaFin
+                ");
+
+                if(!empty($corroborar)){
+                    $response['sta'] = '1';
+                    $response['msg'] = "MEMBRESIA CHOCA CON OTRA PROGRAMADA";
+                    return json_encode($response);
+                }
+            }
 
             $pago = DB::connection('mysql')->table('pagos')->insertGetId([
                 'idCliente' => $cliente,

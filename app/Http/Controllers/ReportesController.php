@@ -84,7 +84,7 @@ class ReportesController extends Controller
         ORDER BY fechaRegistro ASC
         ");
 
-        return view('Reportes.Corte.drillTotalGeneral',compact('tabla','seccion','cliente','inicio','fin'));
+        return view('Reportes.Corte.drillTotalGeneral',compact('tabla','cliente','inicio','fin'));
     }
 
     // ///////////////////////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ class ReportesController extends Controller
                     ) AS s_a
         ) AS s_b
         WHERE sta IN ($inEstatus)
-        ORDER BY fechaInicio ASC
+        ORDER BY fechaInicio DESC
         ");
 
         return view('Reportes.Membresias.reporteMembresiasTabla',compact('tabla'));

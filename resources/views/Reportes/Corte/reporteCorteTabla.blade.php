@@ -3,7 +3,7 @@
         <tr>
             <th class="colcont tdhbottom" style="border-right: 5px solid rgba(236, 236, 236, 0.504) !important;" colspan="3">GENERAL | {{$inicio}} / {{$fin}}</th>
             <th class="colcont tdhbottom" style="border-right: 5px solid rgba(236, 236, 236, 0.504) !important;" colspan="3">MENSUALIDAD</th>
-            <th class="colcont tdhbottom" colspan="4">SERVICIOS</th>
+            <th class="colcont tdhbottom" colspan="3">SERVICIOS</th>
         </tr>
         <tr>
             <th class="colcont" id="c0"></th>
@@ -15,7 +15,6 @@
             <th class="colcont" id="c6"></th>
             <th class="colcont" id="c7"></th>
             <th class="colcont" id="c8"></th>
-            <th class="colcont" id="c9"></th>
         </tr>
         <tr>
             <th class="col" style="width: 5% !important;">#</th>
@@ -26,7 +25,6 @@
             <th class="col" style="width: 10% !important;border-right: 5px solid rgba(236, 236, 236, 0.504) !important;">TOTAL</th>
             <th class="col" style="width: 10% !important;">SEMANAL</th>
             <th class="col" style="width: 10% !important;">VISITA</th>
-            <th class="col" style="width: 10% !important;">HERBALIFE</th>
             <th class="col" style="width: 10% !important;">TOTAL G</th>
         </tr>
     </thead>
@@ -42,7 +40,6 @@
                 <td style="border-right: 5px solid rgba(236, 236, 236, 0.504) !important;" class="drillin" onclick="drillSeccion('MENSUALIDAD','{{$t->idCliente}}','{{$t->Cliente}}',1)">{{flotFormatoM2Pesos($t->TotalGym)}}</td>
                 <td class="drillin" onclick="drillSeccion('SEMANAL','{{$t->idCliente}}','{{$t->Cliente}}',3)">{{flotFormatoM2Pesos($t->Semanal)}}</td>
                 <td class="drillin" onclick="drillSeccion('VISITA','{{$t->idCliente}}','{{$t->Cliente}}',2)">{{flotFormatoM2Pesos($t->Visita)}}</td>
-                <td class="drillin" onclick="drillSeccion('HERBALIFE','{{$t->idCliente}}','{{$t->Cliente}}',4)">{{flotFormatoM2Pesos($t->Herbalife)}}</td>
                 <td class="drillin" onclick="drillTotalGeneral('{{$t->idCliente}}','{{$t->Cliente}}')">{{flotFormatoM2Pesos($t->Total)}}</td>
             </tr>
             @php $numero++; @endphp
@@ -59,8 +56,7 @@
             <td class="filtercol"><input type="text" class="thfilter" idc="6" id="i6"></td>
             <td class="filtercol"><input type="text" class="thfilter" idc="7" id="i7"></td>
             <td class="filtercol"><input type="text" class="thfilter" idc="8" id="i8"></td>
-            <td class="filtercol"><input type="text" class="thfilter" idc="9" id="i9"></td>
-        </tr> 
+        </tr>
     </tfoot>
 </table>
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
@@ -101,8 +97,7 @@ var c_PAG = 4;
 var c_TOG = 5;
 var c_SEM = 6;
 var c_VIS = 7;
-var c_HER = 8;
-var c_TOT = 9;
+var c_TOT = 8;
 // ///////////////////////////////////////////////////////////////////////
 Dtable();
 function Dtable(){
@@ -148,23 +143,19 @@ function contador(Dtable) {
     );
     $('#c'+c_TOG).html(
                         '$'+number_format(Dtable.column(c_TOG,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).sum(),2)+' '+
-                        '('+number_format(Dtable.column(c_TOG,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'    
+                        '('+number_format(Dtable.column(c_TOG,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'
     );
     $('#c'+c_SEM).html(
                         '$'+number_format(Dtable.column(c_SEM,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).sum(),2)+' '+
-                        '('+number_format(Dtable.column(c_SEM,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'    
+                        '('+number_format(Dtable.column(c_SEM,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'
     );
     $('#c'+c_VIS).html(
                         '$'+number_format(Dtable.column(c_VIS,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).sum(),2)+' '+
-                        '('+number_format(Dtable.column(c_VIS,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'    
-    );
-    $('#c'+c_HER).html(
-                        '$'+number_format(Dtable.column(c_HER,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).sum(),2)+' '+
-                        '('+number_format(Dtable.column(c_HER,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'    
+                        '('+number_format(Dtable.column(c_VIS,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'
     );
     $('#c'+c_TOT).html(
                         '$'+number_format(Dtable.column(c_TOT,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).sum(),2)+' '+
-                        '('+number_format(Dtable.column(c_TOT,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'    
+                        '('+number_format(Dtable.column(c_TOT,{filter: 'applied'}).data().filter(function(value, index){return value != "" ? true : false;}).count())+')'
     );
 }
 // ///////////////////////////////////////////////////////////////////////
@@ -188,7 +179,7 @@ function verCliente(id){
 }
 
 function drillSeccion(seccion,idCliente,cliente,idTipo){
-    let inicio = '{{$inicio}}'; 
+    let inicio = '{{$inicio}}';
     let fin = '{{$fin}}';
     $.ajax({
         data: { 'seccion':seccion,'idCliente':idCliente,'cliente':cliente,'idTipo':idTipo,'inicio':inicio,'fin':fin, _token: "{{ csrf_token() }}" },
@@ -209,7 +200,7 @@ function drillSeccion(seccion,idCliente,cliente,idTipo){
 }
 
 function drillTotalGeneral(idCliente,cliente){
-    let inicio = '{{$inicio}}'; 
+    let inicio = '{{$inicio}}';
     let fin = '{{$fin}}';
     $.ajax({
         data: { 'idCliente':idCliente,'cliente':cliente,'inicio':inicio,'fin':fin, _token: "{{ csrf_token() }}" },

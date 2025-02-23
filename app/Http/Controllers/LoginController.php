@@ -28,19 +28,20 @@ class LoginController extends Controller
 
 
         if($response['sta'] != '1'){
-            $consulta = usuarios::where([['user','=',$username],['pass','=',$password],['estatus','!=','2']])->get();
+            $consulta = usuarios::where([['user','=',$username],['pass','=',$password],['estatus','!=','2']])->first();
 
             if(empty($consulta)){
                 $response['sta'] = '1';
                 $response['msg'] = "USUARIO O CONTRASEÑA INCORRECTOS";
             }else{
-                if($consulta[0]->estatus == 0){
+                if($consulta->estatus == 0){
                     $response['sta'] = '1';
                     $response['msg'] = "ACCESO DE USUARIO DESACTIVADO";
+                    return json_encode($response);
                 }else{
-                    Session::put('Sid', $consulta[0]->id);
-                    Session::put('Sname', $consulta[0]->user);
-                    Session::put('Stipo', $consulta[0]->idTipo);
+                    Session::put('Sid', $consulta->id);
+                    Session::put('Sname', $consulta->user);
+                    Session::put('Stipo', $consulta->idTipo);
 
                     $sessionid = Session::get('Sid');
                     $sessionnick = Session::get('Sname');

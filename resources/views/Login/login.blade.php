@@ -37,7 +37,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/img/logo.png');
+    background-image: url('./../img/logo.png');
     background-repeat: repeat;
     background-size: 50px;
     opacity: 0.06;

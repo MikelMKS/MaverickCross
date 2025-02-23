@@ -177,11 +177,16 @@ table.styled-table thead th, table.styled-table thead td {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/img/logo.png'); /* Ruta a tu logo */
+    background-image: url('./../img/logo.png'); /* Ruta a tu logo */
     background-repeat: repeat;
     background-size: 150px 150px; /* Tamaño de la imagen, ajusta según necesidad */
     opacity: 0.2; /* Ajusta para lograr un efecto más o menos visible */
     pointer-events: none;
+}
+
+.modal-body {
+    overflow-y: auto; /* Aplica el scroll solo al body */
+    max-height: calc(90vh - 120px); /* Ajusta la altura restando header y footer */
 }
 
 .modal-header{
@@ -227,6 +232,20 @@ table.styled-table thead th, table.styled-table thead td {
 }
 .inputtext::placeholder  {
     color: #bfbfbf;
+}
+.inputtext[type="date"] {
+    font-size: 12px; /* Reduce el tamaño del texto */
+    height: 20px; /* Mantiene la altura igual a los demás inputs */
+    padding: 2px 5px; /* Ajuste de padding para evitar cortes */
+}
+
+/* Ajustar tamaño del icono de calendario en navegadores WebKit (Chrome, Safari, Edge) */
+.inputtext[type="date"]::-webkit-datetime-edit {
+    font-size: 12px;
+}
+
+.inputtext[type="date"]::-webkit-calendar-picker-indicator {
+    scale: 0.7; /* Reduce el tamaño del icono */
 }
 .titulomodal
 {
